@@ -47,6 +47,7 @@ services:
       - CHOKIDAR_USEPOLLING=true
     depends_on:
       - backend
+    command: ["/usr/local/bin/docker-entrypoint.sh"]
 
 volumes:
   db-data:
