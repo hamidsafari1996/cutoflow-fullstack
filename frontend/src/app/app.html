@@ -1,3 +1,41 @@
+<main class="page">
+  <section class="hero">
+    <div class="hero-box">
+      <h1>{{ title() }}</h1>
+      <form (ngSubmit)="onSearch()" class="search-form">
+        <mat-form-field appearance="outline" class="search-field">
+          <mat-label>Suche</mat-label>
+          <input matInput [ngModel]="searchTerm()" (ngModelChange)="searchTerm.set($event)" name="q" placeholder="Name, E‑Mail oder Firma" />
+        </mat-form-field>
+        <button mat-flat-button color="primary" type="submit">Suchen</button>
+      </form>
+    </div>
+  </section>
+
+  <section class="grid">
+    <div class="cards">
+      <mat-card class="card" *ngFor="let c of pageItems()">
+        <mat-card-title>{{ c.name }}</mat-card-title>
+        <mat-card-content>
+          <div class="line">{{ c.email }}</div>
+          <div class="line muted">{{ c.company }}</div>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-stroked-button color="primary" (click)="toggleFavorite(c)">
+            {{ c.favorite ? 'Favorit entfernen' : 'Als Favorit markieren' }}
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </section>
+
+  <section class="pagination" *ngIf="totalPages() > 1">
+    <button mat-button (click)="goto(currentPage() - 1)" [disabled]="currentPage() === 1">Zurück</button>
+    <span class="page-info">Seite {{ currentPage() }} von {{ totalPages() }}</span>
+    <button mat-button (click)="goto(currentPage() + 1)" [disabled]="currentPage() === totalPages()">Weiter</button>
+  </section>
+</main>
+
 <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
 <!-- * * * * * * * * * * * The content below * * * * * * * * * * * -->
 <!-- * * * * * * * * * * is only a placeholder * * * * * * * * * * -->
