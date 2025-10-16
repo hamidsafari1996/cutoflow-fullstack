@@ -49,5 +49,18 @@ services:
       - backend
     command: ["/usr/local/bin/docker-entrypoint.sh"]
 
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: telution_phpmyadmin
+    restart: unless-stopped
+    environment:
+      PMA_HOST: db
+      PMA_USER: telution
+      PMA_PASSWORD: telutionpass
+    ports:
+      - "8081:80"
+    depends_on:
+      - db
+
 volumes:
   db-data:
