@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Customer } from './customer.model';
+import { Customer } from '../models/customer.model';
+import { environment } from '../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class CustomerService {
-  // Use relative URL; dev-server proxy forwards to backend in Docker
-  private readonly baseUrl = '/customers';
+  // Relative URL; Angular dev-server proxy forwards to backend in Docker
+  private readonly baseUrl = `${(environment.apiBaseUrl || '').replace(/\/+$/, '')}/customers` || '/customers';
 
   constructor(private readonly http: HttpClient) {}
 
