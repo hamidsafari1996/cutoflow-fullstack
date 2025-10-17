@@ -8,8 +8,11 @@ import { HttpClientModule } from '@angular/common/http';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { Customer } from './customer.model';
-import { CustomerService } from './customer.service';
+import { Customer } from './models/customer.model';
+import { CustomerCardComponent } from './components/customer-card/customer-card.component';
+import { SearchBarComponent } from './components/search-bar/search-bar.component';
+import { PaginationComponent } from './components/pagination/pagination.component';
+import { CustomerService } from './services/customer.service';
 
 @Component({
   selector: 'app-root',
@@ -22,7 +25,10 @@ import { CustomerService } from './customer.service';
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
-    MatCardModule
+    MatCardModule,
+    CustomerCardComponent,
+    SearchBarComponent,
+    PaginationComponent
   ],
   templateUrl: './app.html',
   styleUrls: ['./app.css']
@@ -33,6 +39,8 @@ export class App implements OnInit {
   protected readonly customers = signal<Customer[]>([]);
   protected readonly currentPage = signal<number>(1);
   protected readonly pageSize = 6;
+  private loadSequence = 0;
+  private refreshTimer: any = null;
 
   protected readonly filtered = computed(() => {
     const term = this.searchTerm().trim().toLowerCase();
@@ -64,8 +72,12 @@ export class App implements OnInit {
   }
 
   protected loadCustomers(): void {
+    const seq = ++this.loadSequence;
     this.customerService.getCustomers(this.searchTerm()).subscribe(list => {
-      this.customers.set(list);
+      // Ignore stale responses that started before a newer request
+      if (seq === this.loadSequence) {
+        this.customers.set(list);
+      }
     });
   }
 
@@ -74,15 +86,38 @@ export class App implements OnInit {
   }
 
   protected toggleFavorite(c: Customer): void {
-    const action$ = c.favorite ? this.customerService.removeFavorite(c.id) : this.customerService.markFavorite(c.id);
-    action$.subscribe(updated => {
-      const next = this.customers().map(item => (item.id === updated.id ? updated : item));
-      this.customers.set(next);
+    const originalFavorite = c.favorite;
+
+    // Optimistic update
+    const optimistic = this.customers().map(item => item.id === c.id ? { ...item, favorite: !originalFavorite } : item);
+    this.customers.set(optimistic);
+
+    const action$ = originalFavorite ? this.customerService.removeFavorite(c.id) : this.customerService.markFavorite(c.id);
+    action$.subscribe({
+      next: updated => {
+        const synced = this.customers().map(item => (item.id === updated.id ? updated : item));
+        this.customers.set(synced);
+        this.scheduleRefresh();
+      },
+      error: () => {
+        // Revert on failure
+        const reverted = this.customers().map(item => item.id === c.id ? { ...item, favorite: originalFavorite } : item);
+        this.customers.set(reverted);
+      }
     });
   }
 
   protected goto(page: number): void {
     if (page < 1 || page > this.totalPages()) return;
     this.currentPage.set(page);
+  }
+
+  protected trackById(_: number, item: Customer): number {
+    return item.id;
+  }
+
+  private scheduleRefresh(): void {
+    if (this.refreshTimer) clearTimeout(this.refreshTimer);
+    this.refreshTimer = setTimeout(() => this.loadCustomers(), 1500);
   }
 }

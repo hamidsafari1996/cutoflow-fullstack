@@ -1,26 +1,10 @@
 /* Minimal, dark UI matching reference */
 .landing { max-width: 1200px; margin: 0 auto; padding: 24px 16px; }
 
-.hero.dark { background: #2f3136; border-radius: 16px; padding: 36px 24px; }
+.hero.dark { background: #2f3136; border-radius: 16px; padding: 150px 24px 30px; }
 .hero-inner { max-width: 920px; margin: 0 auto; }
 
-.search { position: relative; display: flex; justify-content: center; }
-.search-input {
-  width: 100%; max-width: 700px; height: 56px;
-  background: #eceff1; color: #111;
-  border: none; outline: none;
-  border-radius: 28px; padding: 0 56px 0 28px;
-  font-size: 16px;
-}
-.search-btn {
-  position: absolute; right: calc(50% - 350px + 12px); /* aligns with input end */
-  top: 50%; transform: translateY(-50%);
-  width: 36px; height: 36px; border-radius: 50%;
-  background: transparent; color: #111; border: 0; cursor: pointer;
-}
-@media (max-width: 760px) {
-  .search-btn { right: 12px; }
-}
+/* search styles moved to SearchBarComponent */
 
 .cards-grid { margin-top: 24px; }
 .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
@@ -42,12 +26,4 @@
   background: #1e1f23; color: #f3f4f6; border: 1px solid #3a3c42;
   display: inline-flex; align-items: center; justify-content: center; cursor: pointer;
 }
-.fav.active { background: #f3f4f6; color: #1e1f23; }
-
-.pagination { display: flex; justify-content: center; align-items: center; gap: 16px; margin-top: 24px; }
-.pg-btn {
-  background: #2f3136; color: #f3f4f6; border: 1px solid #3a3c42;
-  border-radius: 8px; padding: 8px 12px; cursor: pointer;
-}
-.pg-btn:disabled { opacity: 0.5; cursor: not-allowed; }
-.page-info { color: #111; font-size: 14px; }
+.fav.active { background: #f3f4f6; color: #1e1f23; }/* pagination styles moved to PaginationComponent */
