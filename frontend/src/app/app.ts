@@ -1,13 +1,8 @@
 import { Component, OnInit, computed, effect, signal } from '@angular/core';
-import { MatFormFieldModule } from '@angular/material/form-field';
 import { RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-// Removed import of MatFormFieldModule as it cannot be found
-import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
 import { Customer } from './models/customer.model';
 import { CustomerCardComponent } from './components/customer-card/customer-card.component';
 import { SearchBarComponent } from './components/search-bar/search-bar.component';
@@ -22,10 +17,6 @@ import { CustomerService } from './services/customer.service';
     CommonModule,
     FormsModule,
     HttpClientModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatButtonModule,
-    MatCardModule,
     CustomerCardComponent,
     SearchBarComponent,
     PaginationComponent
