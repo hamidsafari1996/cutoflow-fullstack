@@ -1,0 +1,7 @@
+<section class="pagination" *ngIf="totalPages > 1">
+  <button class="pg-btn" (click)="previous.emit()" [disabled]="currentPage === 1">Zurück</button>
+  <span class="page-info">Seite {{ currentPage }} / {{ totalPages }}</span>
+  <button class="pg-btn" (click)="next.emit()" [disabled]="currentPage === totalPages">Weiter</button>
+</section>
+
+
