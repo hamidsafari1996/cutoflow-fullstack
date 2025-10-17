@@ -1,0 +1,18 @@
+{
+  "name": "Telution",
+  "short_name": "Telution",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "theme_color": "#1976d2",
+  "background_color": "#121212",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "16x16 24x24 32x32 64x64",
+      "type": "image/x-icon"
+    }
+  ]
+}
+
+
