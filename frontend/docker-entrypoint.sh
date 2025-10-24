@@ -10,7 +10,7 @@ cd /usr/src/app
 
 # If no Angular workspace, scaffold one into current directory
 if [ ! -f angular.json ]; then
-  npx -y @angular/cli@latest new telution-frontend \
+  npx -y @angular/cli@latest new custoflow-frontend \
     --directory . \
     --skip-git \
     --style scss \

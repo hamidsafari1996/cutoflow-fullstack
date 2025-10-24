@@ -3,13 +3,13 @@ version: "3.8"
 services:
   db:
     image: mysql:8.0
-    container_name: telution_db
+    container_name: custoflow_db
     restart: unless-stopped
     environment:
       MYSQL_ROOT_PASSWORD: rootpass
-      MYSQL_DATABASE: telution
-      MYSQL_USER: telution
-      MYSQL_PASSWORD: telutionpass
+      MYSQL_DATABASE: custoflow
+      MYSQL_USER: custoflow
+      MYSQL_PASSWORD: custoflowpass
     volumes:
       - db-data:/var/lib/mysql
     ports:
@@ -19,12 +19,12 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
-    container_name: telution_backend
+    container_name: custoflow_backend
     restart: unless-stopped
     volumes:
       - ./backend:/var/www/html
     environment:
-      DATABASE_URL: "mysql://telution:telutionpass@db:3306/telution"
+      DATABASE_URL: "mysql://custoflow:custoflowpass@db:3306/custoflow"
       APP_ENV: dev
     depends_on:
       - db
@@ -35,7 +35,7 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
-    container_name: telution_frontend
+    container_name: custoflow_frontend
     restart: unless-stopped
     working_dir: /usr/src/app
     volumes:
@@ -51,12 +51,12 @@ services:
 
   phpmyadmin:
     image: phpmyadmin:latest
-    container_name: telution_phpmyadmin
+    container_name: custoflow_phpmyadmin
     restart: unless-stopped
     environment:
       PMA_HOST: db
-      PMA_USER: telution
-      PMA_PASSWORD: telutionpass
+      PMA_USER: custoflow
+      PMA_PASSWORD: custoflowpass
     ports:
       - "8081:80"
     depends_on:
